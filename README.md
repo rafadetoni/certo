@@ -25,11 +25,15 @@ O projeto faz uso de diversas bibliotecas e ferramentas que auxiliam na constru�
 ## Instalação
 
 1. Clone o repositório:
+   
     `$git clone https://github.com/NayanBecker/Goals-Manager.git`
     
-2. Instale as dependências:
+3. Instale as dependências:
+   
     `npm install`
 
-3. Inicie a aplicação:
+4. Inicie a aplicação:
+   
     `npm run seed` - Insere alguns exemplos no banco de dados
-    `npm run dev`
+   
+    `npm run dev` - Inicia aplicação
