@@ -32,4 +32,5 @@ O projeto faz uso de diversas bibliotecas e ferramentas que auxiliam na constru�
 
 3. Inicie a aplicação:
     `npm run seed` - Insere alguns exemplos no banco de dados
+   
     `npm run dev`
