@@ -8,6 +8,10 @@
       "DOM.Iterable"
     ],
     "module": "ESNext",
+    "baseUrl": ".",
+    "paths": {"@/*":[
+      "./src/*"
+    ]},
     "skipLibCheck": true,
     /* Bundler mode */
     "moduleResolution": "bundler",
