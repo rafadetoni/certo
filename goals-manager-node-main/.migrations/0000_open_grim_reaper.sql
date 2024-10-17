@@ -1,18 +1,23 @@
-CREATE TABLE IF NOT EXISTS "goals" (
-	"id" text PRIMARY KEY NOT NULL,
-	"title" text NOT NULL,
-	"desired_weekly_frequency" integer NOT NULL,
-	"created_at" timestamp with time zone DEFAULT now() NOT NULL
+CREATE TABLE IF NOT EXISTS "usuarios" (
+    "id" TEXT PRIMARY KEY,
+    "nome" TEXT,
+    "email" TEXT,
+    "senha" TEXT,
+    "criadoEm" TIMESTAMP WITH TIME ZONE DEFAULT now()
 );
---> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "goal_completions" (
-	"id" text PRIMARY KEY NOT NULL,
-	"goal_id" text NOT NULL,
-	"created_at" timestamp with time zone DEFAULT now() NOT NULL
+
+CREATE TABLE IF NOT EXISTS "metas" (
+    "id" TEXT PRIMARY KEY,
+    "titulo" TEXT,
+    "frequenciaSemanalDesejada" INTEGER,
+    "criadaEm" TIMESTAMP WITH TIME ZONE DEFAULT now(),
+    "usuario_id" TEXT,
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
 );
---> statement-breakpoint
-DO $$ BEGIN
- ALTER TABLE "goal_completions" ADD CONSTRAINT "goal_completions_goal_id_goals_id_fk" FOREIGN KEY ("goal_id") REFERENCES "public"."goals"("id") ON DELETE no action ON UPDATE no action;
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
+
+CREATE TABLE IF NOT EXISTS "metasCompletas" (
+    "id" TEXT PRIMARY KEY,
+    "meta_id" TEXT,
+    "completadaEm" TIMESTAMP WITH TIME ZONE DEFAULT now(),
+    FOREIGN KEY (meta_id) REFERENCES metas(id)
+);
