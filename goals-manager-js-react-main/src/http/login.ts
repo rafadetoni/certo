@@ -3,7 +3,7 @@ export interface LoginRequest {
     senha: string;
   }
   
-  export async function login({ email, senha }: LoginRequest): Promise<string> { // Altera o retorno para string
+  export async function login({ email, senha }: LoginRequest): Promise<string> { 
     const response = await fetch('http://localhost:3333/login', {
       method: 'POST',
       headers: {
@@ -16,17 +16,16 @@ export interface LoginRequest {
     });
   
     if (!response.ok) {
-      throw new Error('Erro ao fazer login!'); // Lança um erro se a resposta não for ok
+      throw new Error('Erro ao fazer login!'); 
     }
   
-    const data = await response.json();
-    console.log('Token recebido:', data.token);
-    
-    return data.token; // Retorna o token aqui
+    const data = await response.json();    
+    localStorage.setItem('token', data.token);
+    return data.token;
   }
   
 
   export function logout() {
-    localStorage.removeItem('token'); // Remove o token armazenado no localStorage
+    localStorage.removeItem('token');
   }
   

@@ -1,31 +1,33 @@
-import { db } from '@/db'
-import { metasCompletas, metas } from '@/db/schema'
-import dayjs from 'dayjs'
-import weekOfYear from 'dayjs/plugin/weekOfYear'
-import { and, asc, count, eq, sql } from 'drizzle-orm'
+import { db } from '@/db';
+import { metasCompletas, metas } from '@/db/schema';
+import dayjs from 'dayjs';
+import weekOfYear from 'dayjs/plugin/weekOfYear';
+import { and, asc, count, eq, sql } from 'drizzle-orm';
 
-dayjs.extend(weekOfYear)
+dayjs.extend(weekOfYear);
 
-export async function getMetasSemanaisPendentes() {
-  const anoAtual = dayjs().year()
-  const semanaAtual = dayjs().week()
+export async function getMetasSemanaisPendentes(usuarioId: string) {
+  const anoAtual = dayjs().year();
+  const semanaAtual = dayjs().week();
 
   const metasCriadasAteASemana = db.$with("metasCriadasAteASemana").as(
-		db
-			.select({
-				id: metas.id,
+    db
+      .select({
+        id: metas.id,
         titulo: metas.titulo,
-				frequenciaSemanalDesejada: metas.frequenciaSemanalDesejada,
-				criadaEm: metas.criadaEm,
-			})
-			.from(metas)
-			.where(
-				and(
-					sql`EXTRACT(YEAR FROM ${metas.criadaEm}) <= ${anoAtual}`,
-					sql`EXTRACT(WEEK FROM ${metas.criadaEm}) <= ${semanaAtual}`,
-				),
-			),
-	)
+        frequenciaSemanalDesejada: metas.frequenciaSemanalDesejada,
+        criadaEm: metas.criadaEm,
+        usuario_id: metas.usuario_id,
+      })
+      .from(metas)
+      .where(
+        and(
+          eq(metas.usuario_id, usuarioId), 
+          sql`EXTRACT(YEAR FROM ${metas.criadaEm}) <= ${anoAtual}`,
+          sql`EXTRACT(WEEK FROM ${metas.criadaEm}) <= ${semanaAtual}`,
+        ),
+      ),
+  );
 
   const metasCompletasCount = db.$with('metasCompletasCount').as(
     db
@@ -35,8 +37,9 @@ export async function getMetasSemanaisPendentes() {
       })
       .from(metasCompletas)
       .innerJoin(metas, eq(metas.id, metasCompletas.meta_id))
+      .where(eq(metas.usuario_id, usuarioId)) 
       .groupBy(metas.id)
-  )
+  );
 
   const metasPendentes = await db
     .with(metasCriadasAteASemana, metasCompletasCount)
@@ -44,17 +47,18 @@ export async function getMetasSemanaisPendentes() {
       id: metasCriadasAteASemana.id,
       titulo: metasCriadasAteASemana.titulo,
       frequenciaSemanalDesejada: metasCriadasAteASemana.frequenciaSemanalDesejada,
-      completasCount:
-        sql /*sql*/`COALESCE(${metasCompletasCount.completasCount}, 0)`.mapWith(
-          Number
-        ),
+      completasCount: sql`COALESCE(${metasCompletasCount.completasCount}, 0)`,
     })
     .from(metasCriadasAteASemana)
     .orderBy(asc(metasCriadasAteASemana.criadaEm))
     .leftJoin(
       metasCompletasCount,
       eq(metasCriadasAteASemana.id, metasCompletasCount.metaId)
-    )
+    );
 
-  return { metasPendentes }
+  if (!metasPendentes.length) {
+    console.warn('Nenhuma meta pendente encontrada.');
+  }
+
+  return { metasPendentes };
 }

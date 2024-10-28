@@ -1,3 +1,4 @@
+
 import { CheckCircle2, Plus } from "lucide-react";
 import newIcon from '../assets/Goal-Manager-Logo.png';
 import { DialogTrigger } from "@radix-ui/react-dialog";
@@ -51,7 +52,7 @@ export function ResumoSemanal({ summary }: ResumoSemanalProps) {
               </Button>
             </DialogTrigger>
 
-            <LogoutButton /> {/* Adiciona o botão de logout aqui */}
+            <LogoutButton /> 
           </div>
         </div>
 

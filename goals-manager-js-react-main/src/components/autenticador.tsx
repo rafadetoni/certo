@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 
-const AuthContext = createContext<any>(null);
+const autenticadorContext = createContext<any>(null);
 
 export const AuthProvider = ({ children }: any) => {
   const [authenticated, setAuthenticated] = useState(false);
@@ -23,10 +23,23 @@ export const AuthProvider = ({ children }: any) => {
   };
 
   return (
-    <AuthContext.Provider value={{ authenticated, login, logout }}>
+    <autenticadorContext.Provider value={{ authenticated, login, logout }}>
       {children}
-    </AuthContext.Provider>
+    </autenticadorContext.Provider>
   );
 };
 
-export const useAuth = () => useContext(AuthContext);
+export const useAuth = () => useContext(autenticadorContext);
+
+import { Navigate } from 'react-router-dom';
+const RotaProtegida = ({ children }: any) => {
+  const { authenticated } = useAuth();
+
+  if (!authenticated) {
+    return <Navigate to="/login" />;
+  }
+
+  return children;
+};
+
+export default RotaProtegida;

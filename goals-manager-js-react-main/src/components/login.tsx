@@ -13,23 +13,22 @@ const Login = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log({ email, senha });
     try {
-      const token = await login({ email, senha }); // Chama a função de login
+      const token = await login({ email, senha });
       if (token) {
-        localStorage.setItem('token', token); // Armazena o token no localStorage
-        navigate('/'); // Redireciona para a página principal
+        localStorage.setItem('token', token); 
+        navigate('/'); 
       } else {
-        setMensagem('Email ou senha incorretos.'); // Mensagem de erro se o login falhar
+        setMensagem('Email ou senha incorretos.');
       }
     } catch (error) {
-      setMensagem('Erro ao fazer login.'); // Mensagem de erro
-      console.error(error); // Log do erro no console
+      setMensagem('Erro ao fazer login.');
+      console.error(error); 
     }
   };
 
   const handleRegisterRedirect = () => {
-    navigate('/cadastro'); // Redireciona para a página de cadastro
+    navigate('/cadastro'); 
   };
 
   
@@ -67,7 +66,7 @@ const Login = () => {
             Entrar
           </Button>
         </form>
-        {mensagem && <p className="text-center text-red-500">{mensagem}</p>} {/* Exibe a mensagem */}
+        {mensagem && <p className="text-center text-red-500">{mensagem}</p>} {}
         <div className="flex justify-center mt-4">
           <Button 
             type="button" 

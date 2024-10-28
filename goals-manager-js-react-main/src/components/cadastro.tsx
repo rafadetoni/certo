@@ -3,23 +3,23 @@ import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Label } from './ui/label'; 
 import { cadastro } from '../http/cadastro';
-import { useNavigate } from 'react-router-dom'; // Importa useNavigate
+import { useNavigate } from 'react-router-dom';
 
 const Cadastro = () => {
   const [email, setEmail] = useState('');
   const [senha, setPassword] = useState('');
   const [mensagem, setMensagem] = useState('');
-  const navigate = useNavigate(); // Inicializa o hook para navegação
+  const navigate = useNavigate(); 
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     console.log({ email, senha });
     try {
-      await cadastro({ email, senha }); // Aqui deve ser a função de cadastro
-      setMensagem('Usuário cadastrado com sucesso!'); // Mensagem de sucesso
+      await cadastro({ email, senha }); 
+      setMensagem('Usuário cadastrado com sucesso!');
     } catch (error) {
-      setMensagem('Erro ao cadastrar o usuário.'); // Mensagem de erro
-      console.error(error); // Log do erro no console
+      setMensagem('Erro ao cadastrar o usuário.'); 
+      console.error(error); 
     }
   };
 
@@ -56,7 +56,7 @@ const Cadastro = () => {
             Cadastrar
           </Button>
         </form>
-        {mensagem && <p className="text-center text-red-500">{mensagem}</p>} {/* Exibe a mensagem */}
+        {mensagem && <p className="text-center text-red-500">{mensagem}</p>} {}
         <div className="flex justify-center mt-4">
           <Button onClick={() => navigate('/login')} className="text-purple-700 underline">
             Já possui uma conta? Faça login

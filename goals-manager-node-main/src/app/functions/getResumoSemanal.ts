@@ -6,7 +6,7 @@ import { and, desc, eq, sql } from 'drizzle-orm'
 
 dayjs.extend(weekOfYear)
 
-export async function getResumoSemanal() {
+export async function getResumoSemanal(usuario_id: any) {
   const anoAtual = dayjs().year()
   const semanaAtual = dayjs().week()
 
@@ -20,6 +20,7 @@ export async function getResumoSemanal() {
 			.from(metas)
 			.where(
 				and(
+          eq(metas.usuario_id, usuario_id), 
 					sql`EXTRACT(YEAR FROM ${metas.criadaEm}) <= ${anoAtual}`,
 					sql`EXTRACT(WEEK FROM ${metas.criadaEm}) <= ${semanaAtual}`,
 				),
@@ -41,6 +42,7 @@ export async function getResumoSemanal() {
       .innerJoin(metas, eq(metas.id, metasCompletas.meta_id))
       .where(
         and(
+          eq(metas.usuario_id, usuario_id), 
           sql`EXTRACT(YEAR FROM ${metas.criadaEm}) = ${anoAtual}`,
           sql`EXTRACT(WEEK FROM ${metas.criadaEm}) = ${semanaAtual}`
         )

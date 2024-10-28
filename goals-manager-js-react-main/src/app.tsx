@@ -8,8 +8,10 @@ import { MetasVazias } from './components/metasVazias';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Login from './components/login';
 import Cadastro from './components/cadastro';
-import { AuthProvider } from './components/auth'; // Importar o contexto de autenticação
-import ProtectedRoute from './components/ProtectedRoute'; // Componente para rotas protegidas
+import { AuthProvider } from './components/autenticador'; 
+import RotaProtegida from './components/autenticador'; 
+
+
 
 export function App() {
   return (
@@ -21,12 +23,11 @@ export function App() {
           <Route
             path="/"
             element={
-              <ProtectedRoute>
+              <RotaProtegida>
                 <MainContent />
-              </ProtectedRoute>
+              </RotaProtegida>
             }
           />
-          {/* Redirecionar para login por padrão */}
           <Route path="*" element={<Navigate to="/login" />} />
         </Routes>
       </Router>
@@ -60,4 +61,3 @@ const MainContent = () => {
   );
 };
 
-export default App;

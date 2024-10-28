@@ -23,6 +23,6 @@ export interface CadastroRequest {
     }
   
     const data = await response.json();
-    localStorage.setItem('token', data.token); // Armazena o token de autenticação no localStorage
+    localStorage.setItem('token', data.token);
   }
   

@@ -7,7 +7,7 @@ export function MetasVazias() {
   return (
     <main className="h-screen flex flex-col items-center justify-center gap-8">
       <div className="absolute top-4 right-4"> 
-        <LogoutButton /> {/* Botão de logout no canto superior direito */}
+        <LogoutButton /> {}
       </div>
       
       <img src={imglogo} alt="Goals-manager-logo" width={200} />
